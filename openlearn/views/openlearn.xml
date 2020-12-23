@@ -1,0 +1,103 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="openlearn.list">
+            <field name="name">openlearn list</field>
+            <field name="model">openlearn.openlearn</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="description" />
+                    <field name="responsible_id"/>
+                    <!-- <field name="session_ids"/> -->
+                </tree>
+            </field>
+        </record>
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="openlearn.action_window">
+            <field name="name">openlearn Courses</field>
+            <field name="res_model">openlearn.openlearn</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.ui.view" id="session_form_view">
+            <field name="name">session.form</field>
+            <field name="model">openlearn.session</field>
+            <field name="arch" type="xml">
+                <form string="Session Form">
+                    <sheet>
+                        <group>
+                            <group string="General">
+                                <field name="name"/>
+                                <field name="course_id"/>
+                                <field name="instructor_id"/>
+                                <field name="active"/>
+                            </group>
+                            <group string="programme">
+                                <field name="start_date"/>
+                                <field name="duration"/>
+                                <field name="seats"/>
+                                <field name="taken_seats" widget="progressbar"/>
+
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Decription" name="General">
+                                <tree>
+                                    <label for="attendee_ids"/>
+                                    <field name="attendee_ids"/>
+                                </tree>
+                            </page>
+
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- calendar view -->
+        <!-- <record model="ir.ui.view" id="session_calendar_view">
+            <field name="name">openlearn.session</field>
+            <field name="model">openlearn.session</field>
+            <field name="arch" type="xml">
+                <calendar string="Session Calendar" date_start="start_date" date_stop="end_date" color="instructor_id">
+                    <field name="name"/>
+                </calendar>
+            </field>
+    </record> -->
+
+        <record model="ir.actions.act_window" id="session_list_action">
+            <field name="name">Sessions</field>
+            <field name="res_model">openlearn.session</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- openlearn.session tree view -->
+        <record id="session_view_tree" model="ir.ui.view">
+            <field name="name">openlearn.session.view.tree</field>
+            <field name="model">openlearn.session</field>
+            <field name="arch" type="xml"> 
+            #duration decoration color editable="top"
+                <tree string="Session Tree" decoration-info="duration&lt;5" decoration-danger="duration&gt;15">
+                    <!-- Add your fields here -->
+                    <field name="name"/>
+                    <field name="course_id"/>
+                    <field name="taken_seats" widget="progressbar"/>
+                    <field name="duration" invisible="1"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!-- Top menu item -->
+
+        <menuitem name="openlearn" id="openlearn_menu_root"/>
+
+        <!-- menu categories -->
+        <menuitem name="Cours" id="cours_menu_1" parent="openlearn_menu_root" action="openlearn.action_window"/>
+        <menuitem id="session_menu" name="Sessions" parent="openlearn_menu_root" action="session_list_action"/>
+
+        <!-- actions -->
+    </data>
+</odoo>
